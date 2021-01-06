@@ -57,18 +57,32 @@ def decrypt(encrypted_text, n):
 
 
 def edit_text():
-    s = [i for i in input().lower().split()]
-    book = {}
+    s = [i for i in input().lower().split()] ### Вводим нужный нам текст, разбиваем его по пробельному символу, приводим в нижний регистр.
+    words = {} 
     text = []
-    for i in s:
-        if i in book:
-            book[i] += 1
+    for i in s: ### Записываем все слова в словарь
+        if i in words:
+            words[i] += 1
         else:
-            book[i] = 1
-    if len(book) < 3:
-        return book.clear()
+            words[i] = 1
+    if len(words) < 3: ### Проверяем на количество записаных слов в словаре, если меньше трех возвращаем пустой
+        return words.clear()
     else:
-        for k in book.keys():
-            text.append(k)
-    return ' '.join(text[:3])
-print(edit_text())
+        max_words = max(words.values())  ### Находим максимальное значение повторяющегося слова
+        while len(text) < 3: ### Цикл для составления списка самых популярных слов
+            if len(text) == 0: ### Если список пуст, добавляем одно или два(если значения равные) ключа(слова)
+                for k, v in words.items(): 
+                    if v == max_words:
+                        text.append(k)
+                max_words-=1
+            elif len(text) <= 2: ### Если в списке меньше двух слов, добавляем третье, меньшее по значению на 1
+                for k, v in words.items():
+                    if v == max_words:
+                        text.append(k)
+                max_words-=1        
+            else: ### если в списке все еще меньше трех слов добавляем еще одно уже меньшее по значению на два.
+                for k, v in words.items():
+                    if v == max_words:
+                        text.append(k)    
+        return ",".join(text[:3]) ### Выводим список слов через запятую, ограничивая количество выведеных слов, ведь их могло получится больше трех.
+print(edit_text()) ### Тестируем результат
