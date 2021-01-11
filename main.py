@@ -68,21 +68,9 @@ def edit_text():
     if len(words) < 3: ### Проверяем на количество записаных слов в словаре, если меньше трех возвращаем пустой
         return words.clear()
     else:
-        max_words = max(words.values())  ### Находим максимальное значение повторяющегося слова
-        while len(text) < 3: ### Цикл для составления списка самых популярных слов
-            if len(text) == 0: ### Если список пуст, добавляем одно или два(если значения равные) ключа(слова)
-                for k, v in words.items(): 
-                    if v == max_words:
-                        text.append(k)
-                max_words-=1
-            elif len(text) <= 2: ### Если в списке меньше двух слов, добавляем третье, меньшее по значению на 1
-                for k, v in words.items():
-                    if v == max_words:
-                        text.append(k)
-                max_words-=1        
-            else: ### если в списке все еще меньше трех слов добавляем еще одно уже меньшее по значению на два.
-                for k, v in words.items():
-                    if v == max_words:
-                        text.append(k)    
-        return ",".join(text[:3]) ### Выводим список слов через запятую, ограничивая количество выведеных слов, ведь их могло получится больше трех.
+        sorted_by_value =  sorted(words.items(), key=lambda x: x[1]) ### Сортируем словарь по величине значений
+        a = sorted_by_value[-1] ### Создаем кортеж из максимальных трех значений
+        b = sorted_by_value[-2]
+        c = sorted_by_value[-3]          
+    return a[0],b[0],c[0] ### Возвращаем ключи без количества повторений.
 print(edit_text()) ### Тестируем результат
